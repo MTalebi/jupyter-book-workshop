@@ -20,7 +20,7 @@ numbering:
 # Creating Interactive Computational Books with Jupyter Book 2
 ---
 
-## 1. Getting Started
+## Getting Started
 
 ### Setting Up Your Environment
 
@@ -64,7 +64,7 @@ Install all requirements:
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-## 2. Project Configuration
+## Project Configuration
 We'll organize content in a `content/` folder.
 
 ### Understanding myst.yml
@@ -119,7 +119,7 @@ The `--execute` flag is crucial because:
 
 Your book will be available at `http://localhost:3000`. The page updates automatically as you edit files, and code cells re-execute on changes.
 
-## 3. Writing Foundations & Visual Content
+## Writing Foundations & Visual Content
 
 ### File Formats
 
@@ -209,13 +209,11 @@ For subfigures, use a grid structure:
 
 :::{image} ./images/experimental.png
 :::
-Experimental results
 
 :::{image} ./images/simulation.png
 :::
-Simulation results
 
-Comparison between experimental and numerical results
+Experimental results
 ::::
 
 
@@ -225,18 +223,21 @@ Comparison between experimental and numerical results
 
 Simple markdown tables:
 
-
+:::{table} Material Properties
 | Material | Young's Modulus (GPa) | Poisson's Ratio |
 |----------|----------------------|-----------------|
 | Steel    | 200                  | 0.30            |
 | Aluminum | 69                   | 0.33            |
 | Concrete | 30                   | 0.20            |
-
+:::
 
 For CSV data inline in your document:
 
 
-:::{csv-table} Material Properties
+::::{table} Material Properties
+:label: material-table-csv
+:align: center
+:::{csv-table}
 :header: "Material", "Density (kg/m³)", "Yield Strength (MPa)"
 
 "Steel", 7850, 250
@@ -244,7 +245,7 @@ For CSV data inline in your document:
 "Titanium", 4500, 880
 "Concrete", 2400, 3
 :::
-
+::::
 
 For external CSV files, use the table directive:
 
@@ -252,13 +253,12 @@ For external CSV files, use the table directive:
 ::::{table} Material Properties
 :label: material-table
 :align: center
-
 :::{include} ./data/materials.csv
 :::
 ::::
 
 
-## 4. Scholarly Features
+## Scholarly Features
 
 ### Cross-References
 
@@ -276,11 +276,11 @@ Material properties are listed in [](#material-table).
 Use `{numref}` for numbered references with custom text:
 
 
-{numref}`Figure %s <beam-fig>` shows the beam deflection.
+{numref}`beam-fig` shows the beam deflection.
 
-See {numref}`Table %s <material-table>` for material properties.
+See {numref}`material-table` for material properties.
 
-From {eq}`navier-stokes`, we can derive...
+From {numref}`Equation %s <navier-stokes>`, we can derive...
 
 
 ### Citations
@@ -290,7 +290,8 @@ From {eq}`navier-stokes`, we can derive...
 Create a `references.bib` file:
 
 ```{code} bibtex
-:caption: references.bib
+:filename: references.bib
+
 @article{smith2023,
   title={Computational Mechanics of Structures},
   author={Smith, John and Doe, Jane},
@@ -315,7 +316,7 @@ Multiple citations [@smith2023; @doe2022] indicate...
 
 Cite directly using DOI:
 
-The foundational work @10.1093/nar/22.22.4673 established...
+The foundational work @10.5281/zenodo.6476040 established...
 
 
 ### Abbreviations
@@ -364,7 +365,7 @@ project:
     - name: Mohammad Talebi-Kalaleh
       affiliations:
         - University of Alberta
-      orcid: 0000-0000-0000-0000
+      orcid: 0009-0004-3754-5992
 ```
 
 **Option 2: Page-specific in `.md` files** (for unique page metadata):
@@ -380,7 +381,7 @@ doi: 10.1000/chapter-doi
 
 Best practice: Define common metadata (authors, keywords, abbreviations) in `myst.yml`, then add page-specific details (title, date, DOI) in individual files.
 
-## 5. Code Integration
+## Code Integration
 
 ### Global Configuration
 
@@ -461,7 +462,11 @@ plt.show()
 
 ### Including External Code
 
-Include code from separate files:
+Include code from separate files. This directive is helpful for showing code snippets without duplicating your content:
+
+```{literalinclude} ./scripts/analysis.py
+:lineno-match:
+```
 
 ```{literalinclude} ./scripts/analysis.py
 :start-at: def main
@@ -472,6 +477,14 @@ Include code from separate files:
 ### Controlling Cell Visibility
 
 Use tags to control what readers see:
+
+Available tags:
+- `hide-input`: Collapse code (can be expanded)
+- `hide-output`: Collapse output
+- `remove-input`: Completely remove code
+- `remove-output`: Completely remove output
+- `remove-cell`: Remove entire cell
+
 
 ```{code-cell} python
 :tags: [hide-input]
@@ -493,14 +506,7 @@ for i in range(1000):
 plot_final_results()
 ```
 
-Available tags:
-- `hide-input`: Collapse code (can be expanded)
-- `hide-output`: Collapse output
-- `remove-input`: Completely remove code
-- `remove-output`: Completely remove output
-- `remove-cell`: Remove entire cell
-
-## 6. Enhanced Content
+## Enhanced Content
 
 ### Inline Code Results with {eval}
 
@@ -606,7 +612,7 @@ Embed multimedia content:
 Experimental setup and testing procedure
 :::
 
-## 7. Exporting to LaTeX and PDF
+## Exporting to LaTeX and PDF
 
 ### List Available Templates
 
@@ -645,7 +651,7 @@ jupyter-book build --tex
 
 The LaTeX files will be in `_build/tex/`.
 
-## 8. Authoring with JupyterLab
+## Authoring with JupyterLab
 
 ### Accessing the Jupyter Server
 
@@ -690,7 +696,7 @@ Why use MyST Markdown (`.md`) instead of Jupyter Notebooks (`.ipynb`)?
 
 This approach separates content from presentation, making your book maintainable long-term.
 
-## 9. Web Deployment with GitHub Pages
+## Web Deployment with GitHub Pages
 
 ### Create .gitignore
 
@@ -760,7 +766,7 @@ jobs:
 3. Select "GitHub Actions" as source
 4. Your book deploys automatically on each push
 
-## 10. Maintenance & Collaboration
+## Maintenance & Collaboration
 
 ### Version Control Workflow
 
