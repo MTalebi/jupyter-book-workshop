@@ -48,7 +48,8 @@ pip install jupyterlab-myst
 For reproducibility, create a `requirements.txt` file with all your dependencies:
 
 ```{code} text
-:caption: requirements.txt
+:filename: requirements.txt
+
 jupyter-book>=2.0.0a0
 jupyterlab-myst
 numpy
@@ -71,7 +72,8 @@ We'll organize content in a `content/` folder.
 Creates a `myst.yml` configuration file. The `myst.yml` file controls your book's metadata and build settings. Here's a minimal configuration for an academic paper:
 
 ```{code} yaml
-:caption: myst.yml for a paper
+:filename: myst.yml
+
 # See docs at: https://mystmd.org/guide/frontmatter
 version: 1
 project:
@@ -91,7 +93,8 @@ site:
 For a book with multiple chapters, adjust the `toc` section:
 
 ```{code} yaml
-:caption: myst.yml additions for a book
+:filename: myst.yml
+
 project:
   toc:
     - file: content/intro.md
@@ -131,7 +134,7 @@ We'll focus on MyST Markdown as it's easiest to maintain and version control.
 
 Start each MyST markdown file with this frontmatter to enable proper execution and numbering:
 
-```markdown
+```yaml
 ---
 jupytext:
   text_representation:
@@ -200,13 +203,9 @@ Deflection of a cantilever beam under point load
 
 For subfigures, use a grid structure:
 
-:::::{figure} ./images/comparison.png
+::::{figure} ./images/comparison.png
 :label: comparison-fig
 :align: center
-
-::::{subfigure} 2
-:width: 45%
-:gap: 10px
 
 :::{image} ./images/experimental.png
 :::
@@ -215,10 +214,9 @@ Experimental results
 :::{image} ./images/simulation.png
 :::
 Simulation results
-::::
 
 Comparison between experimental and numerical results
-:::::
+::::
 
 
 **Tip**: Save PowerPoint diagrams as SVG format for editability and scalability.
@@ -251,13 +249,13 @@ For CSV data inline in your document:
 For external CSV files, use the table directive:
 
 
-:::{table} Material Properties
+::::{table} Material Properties
 :label: material-table
 :align: center
 
-```{include} ./data/materials.csv
-```
+:::{include} ./data/materials.csv
 :::
+::::
 
 
 ## 4. Scholarly Features
@@ -303,15 +301,15 @@ Create a `references.bib` file:
 
 Add to frontmatter and cite:
 
-```markdown
+```yaml
 ---
 bibliography: references.bib
 ---
-
+```
 Recent studies [@smith2023] show that...
 
 Multiple citations [@smith2023; @doe2022] indicate...
-```
+
 
 #### Method 2: DOI
 
@@ -324,7 +322,9 @@ The foundational work @10.1093/nar/22.22.4673 established...
 
 Define abbreviations project-wide in `myst.yml` (recommended) or in individual files:
 
-```yaml
+```{code} yaml
+:filename: myst.yml
+
 # In myst.yml - applies to all pages
 project:
   title: Structural Analysis Guide
@@ -353,7 +353,8 @@ You can set metadata in two places:
 
 **Option 1: Project-wide in `myst.yml`** (recommended for common metadata):
 
-```yaml
+```{code} yaml
+:filename: myst.yml
 # In myst.yml
 project:
   title: Computational Mechanics Book
@@ -368,7 +369,7 @@ project:
 
 **Option 2: Page-specific in `.md` files** (for unique page metadata):
 
-```markdown
+```yaml
 ---
 title: Chapter 3: Nonlinear Analysis
 date: 2024-11-19
