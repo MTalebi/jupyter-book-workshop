@@ -15,7 +15,8 @@ project:
       orcid: 0009-0004-3754-5992
       email: talebi@ualberta.ca
   github: MTalebi/jupyter-book-workshop
-  
+  jupyter: true
+
   abbreviations:
     SHM: Structural Health Monitoring
     FEM: Finite Element Method
@@ -37,4 +38,4 @@ site:
     - title: Download PDF
       url: /_build/pdf/book.pdf
     - title: GitHub
-      url: https://github.com/yourusername/jupyter-book-workshop
+      url: https://github.com/MTalebi/jupyter-book-workshop
