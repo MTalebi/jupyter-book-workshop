@@ -1,0 +1,7 @@
+jupyter-book>=2.0.0a0
+jupyterlab-myst
+numpy
+matplotlib
+pandas
+scipy
+ipywidgets

@@ -1,0 +1,39 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  title: Interactive Computational Books Workshop
+  description: Learn to create computational documents with Jupyter Book
+  keywords:
+    - jupyter-book
+    - computational-documents
+    - structural-engineering
+    - interactive-publishing
+  authors:
+    - name: Mohammad Talebi-Kalaleh
+      affiliations:
+        - University of Alberta
+      orcid: 0000-0000-0000-0000
+      email: talebi@ualberta.ca
+  github: yourusername/jupyter-book-workshop
+  
+  abbreviations:
+    SHM: Structural Health Monitoring
+    FEM: Finite Element Method
+    DOF: Degrees of Freedom
+    FFT: Fast Fourier Transform
+    PCA: Principal Component Analysis
+    
+  toc:
+    - file: content/intro
+    - file: content/chapter1
+    - file: content/chapter2
+    
+site:
+  template: book-theme
+  favicon: images/favicon.ico
+  
+  actions:
+    - title: Download PDF
+      url: /_build/pdf/book.pdf
+    - title: GitHub
+      url: https://github.com/yourusername/jupyter-book-workshop
