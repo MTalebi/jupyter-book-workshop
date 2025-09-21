@@ -1,10 +1,23 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.2
+kernelspec:
+  name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
+numbering:
+  headings: true
+  figure: true
+  table: true
+  equation: true
+  code: true
+---
+
 # Creating Interactive Computational Books with Jupyter Book 2
-
-**Instructor**: Mohammad Talebi-Kalaleh  
-**PhD Candidate, Structural Engineering**  
-**University of Alberta**  
-**Supervisor**: Dr. Qipei Mei
-
 ---
 
 ## 1. Getting Started
@@ -17,9 +30,9 @@ First, create a project folder and set up a Python virtual environment. This kee
 python -m venv .venv
 ```
 
-%Activate the environment:
-%- **Windows**: `.venv\Scripts\activate`
-%- **Mac/Linux**: `source .venv/bin/activate`
+Activate the environment:
+- **Windows**: `.venv\Scripts\activate`
+- **Mac/Linux**: `source .venv/bin/activate`
 
 ### Installing Jupyter Book
 
@@ -34,7 +47,7 @@ pip install jupyterlab-myst
 
 For reproducibility, create a `requirements.txt` file with all your dependencies:
 
-```{code-block} text
+```{code} text
 :caption: requirements.txt
 jupyter-book>=2.0.0a0
 jupyterlab-myst
@@ -57,7 +70,7 @@ We'll organize content in a `content/` folder.
 
 Creates a `myst.yml` configuration file. The `myst.yml` file controls your book's metadata and build settings. Here's a minimal configuration for an academic paper:
 
-```{code-block} yaml
+```{code} yaml
 :caption: myst.yml for a paper
 # See docs at: https://mystmd.org/guide/frontmatter
 version: 1
@@ -77,7 +90,7 @@ site:
 
 For a book with multiple chapters, adjust the `toc` section:
 
-```{code-block} yaml
+```{code} yaml
 :caption: myst.yml additions for a book
 project:
   toc:
@@ -168,17 +181,14 @@ Write inline math using single dollars: $E = mc^2$
 
 For display equations with labels:
 
-```markdown
 $$
 \frac{\partial u}{\partial t} + \nabla \cdot (u \otimes u) = -\nabla p + \nu \nabla^2 u
 $$ (navier-stokes)
-```
 
 ### Figures
 
 Add figures with captions and labels for cross-referencing:
 
-```markdown
 :::{figure} ./images/beam-deflection.png
 :label: beam-fig
 :align: center
@@ -186,12 +196,11 @@ Add figures with captions and labels for cross-referencing:
 
 Deflection of a cantilever beam under point load
 :::
-```
+
 
 For subfigures, use a grid structure:
 
-```markdown
-:::{figure} ./images/comparison.png
+:::::{figure} ./images/comparison.png
 :label: comparison-fig
 :align: center
 
@@ -209,8 +218,8 @@ Simulation results
 ::::
 
 Comparison between experimental and numerical results
-:::
-```
+:::::
+
 
 **Tip**: Save PowerPoint diagrams as SVG format for editability and scalability.
 
@@ -218,17 +227,17 @@ Comparison between experimental and numerical results
 
 Simple markdown tables:
 
-```markdown
+
 | Material | Young's Modulus (GPa) | Poisson's Ratio |
 |----------|----------------------|-----------------|
 | Steel    | 200                  | 0.30            |
 | Aluminum | 69                   | 0.33            |
 | Concrete | 30                   | 0.20            |
-```
+
 
 For CSV data inline in your document:
 
-```markdown
+
 :::{csv-table} Material Properties
 :header: "Material", "Density (kg/m³)", "Yield Strength (MPa)"
 
@@ -237,11 +246,11 @@ For CSV data inline in your document:
 "Titanium", 4500, 880
 "Concrete", 2400, 3
 :::
-```
+
 
 For external CSV files, use the table directive:
 
-```markdown
+
 :::{table} Material Properties
 :label: material-table
 :align: center
@@ -249,7 +258,7 @@ For external CSV files, use the table directive:
 ```{include} ./data/materials.csv
 ```
 :::
-```
+
 
 ## 4. Scholarly Features
 
@@ -257,25 +266,24 @@ For external CSV files, use the table directive:
 
 Reference any labeled element using its label:
 
-```markdown
+
 As shown in [](#beam-fig), the deflection increases linearly.
 
 The governing equation [](#navier-stokes) describes fluid motion.
 
 Material properties are listed in [](#material-table).
-```
 
 ### Numbered References
 
 Use `{numref}` for numbered references with custom text:
 
-```markdown
+
 {numref}`Figure %s <beam-fig>` shows the beam deflection.
 
 See {numref}`Table %s <material-table>` for material properties.
 
 From {eq}`navier-stokes`, we can derive...
-```
+
 
 ### Citations
 
@@ -283,7 +291,7 @@ From {eq}`navier-stokes`, we can derive...
 
 Create a `references.bib` file:
 
-```{code-block} bibtex
+```{code} bibtex
 :caption: references.bib
 @article{smith2023,
   title={Computational Mechanics of Structures},
@@ -309,9 +317,8 @@ Multiple citations [@smith2023; @doe2022] indicate...
 
 Cite directly using DOI:
 
-```markdown
 The foundational work @10.1093/nar/22.22.4673 established...
-```
+
 
 ### Abbreviations
 
@@ -335,10 +342,10 @@ project:
 
 Then use abbreviations anywhere in your content:
 
-```markdown
+
 The FEM uses DOF to analyze structures. 
 SHM systems often employ FFT for signal processing.
-```
+
 
 ### Frontmatter Metadata
 
@@ -378,7 +385,7 @@ Best practice: Define common metadata (authors, keywords, abbreviations) in `mys
 
 Create a hidden setup cell at the document start:
 
-```markdown
+
 ```{code-cell} python
 :tags: [remove-cell]
 
@@ -407,24 +414,24 @@ rcParams.update({
 # Set random seed for reproducibility
 np.random.seed(42)
 ```
-```
+
 
 ### Static Code Blocks
 
 Display code without execution:
 
-```markdown
+
 ```python
 def calculate_stress(force, area):
     """Calculate engineering stress"""
     return force / area
 ```
-```
+
 
 With line numbers and highlighting:
 
-```markdown
-```{code-block} python
+
+```{code} python
 :linenos:
 :emphasize-lines: 2,3
 
@@ -433,13 +440,11 @@ def beam_deflection(load, length, E, I):
     delta_max = (load * length**3) / (3 * E * I)
     return delta_max
 ```
-```
 
 ### Executable Code Cells
 
 Create executable cells that run when building:
 
-```markdown
 ```{code-cell} python
 # Generate sample data
 x = np.linspace(0, 10, 100)
@@ -452,25 +457,21 @@ plt.title('Damped Oscillation')
 plt.grid(True)
 plt.show()
 ```
-```
 
 ### Including External Code
 
 Include code from separate files:
 
-```markdown
 ```{literalinclude} ./scripts/analysis.py
 :start-at: def main
 :end-before: if __name__
 :lineno-match:
-```
 ```
 
 ### Controlling Cell Visibility
 
 Use tags to control what readers see:
 
-```markdown
 ```{code-cell} python
 :tags: [hide-input]
 # Code hidden, only output shown
@@ -490,7 +491,6 @@ for i in range(1000):
 # Only the plot appears, no code
 plot_final_results()
 ```
-```
 
 Available tags:
 - `hide-input`: Collapse code (can be expanded)
@@ -505,7 +505,6 @@ Available tags:
 
 Display variables from code cells inline:
 
-```markdown
 ```{code-cell} python
 :tags: [remove-cell]
 max_stress = 250.5
@@ -514,13 +513,11 @@ safety_factor = 2.5
 
 The maximum stress is {eval}`max_stress` MPa, 
 with a safety factor of {eval}`safety_factor`.
-```
 
 ### Interactive Widgets
 
 Create interactive elements with ipywidgets:
 
-```markdown
 ```{code-cell} python
 import ipywidgets as widgets
 from IPython.display import display
@@ -536,13 +533,11 @@ def plot_wave(frequency=2):
     plt.title(f'Sine Wave: f = {frequency}')
     plt.show()
 ```
-```
 
 ### Admonitions
 
 Highlight important information:
 
-```markdown
 :::{note}
 This method assumes linear elastic behavior.
 :::
@@ -559,13 +554,11 @@ Use dimensionless parameters to generalize your results.
 :::{important}
 Safety factors must comply with local building codes.
 :::
-```
 
 ### Exercise and Solution Blocks
 
 Create teaching materials:
 
-```markdown
 :::{exercise}
 :label: ex1
 Calculate the natural frequency of a cantilever beam with:
@@ -583,13 +576,11 @@ $$\omega_n = \sqrt{\frac{3EI}{mL^3}}$$
 Substituting values:
 $$\omega_n = \sqrt{\frac{3 \times 1000}{10 \times 2^3}} = 6.12 \text{ rad/s}$$
 :::
-```
 
 ### Mermaid Diagrams
 
 Create flowcharts and diagrams:
 
-```markdown
 ```{mermaid}
 flowchart TD
     A[Load Applied] --> B{Linear Analysis}
@@ -600,13 +591,11 @@ flowchart TD
     F -->|No| E
     F -->|Yes| G[Final Results]
 ```
-```
 
 ### Videos and iFrames
 
 Embed multimedia content:
 
-```markdown
 :::{iframe} https://www.youtube.com/embed/VIDEO_ID
 :width: 100%
 :::
@@ -615,7 +604,6 @@ Embed multimedia content:
 :width: 80%
 Experimental setup and testing procedure
 :::
-```
 
 ## 7. Exporting to LaTeX and PDF
 
@@ -705,7 +693,7 @@ This approach separates content from presentation, making your book maintainable
 
 ### Create .gitignore
 
-```{code-block} text
+```{code} text
 :caption: .gitignore
 .venv/
 _build/
@@ -719,7 +707,7 @@ __pycache__/
 
 Create `.github/workflows/deploy.yml`:
 
-```{code-block} yaml
+```{code} yaml
 :caption: .github/workflows/deploy.yml
 name: Deploy Jupyter Book to GitHub Pages
 
