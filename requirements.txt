@@ -6,3 +6,8 @@ pandas
 scipy
 ipywidgets
 altair
+sympy
+jupyter
+IPython
+ipykernel
+jupyter-client

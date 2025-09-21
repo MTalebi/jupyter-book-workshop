@@ -28,11 +28,12 @@ project:
     - file: content/intro.md
     - file: content/chapter1.md
     - file: content/chapter2.md
-    - file: jupyter-book-workshop.md
+    - file: content/Comprehensive MyST Documnet.md
     
 site:
   template: book-theme
   favicon: images/favicon.ico
+  logo_text: "Example Jupyter Book"
   
   actions:
     - title: Download PDF
