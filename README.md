@@ -3,7 +3,7 @@
 Live demo of computational book features using Jupyter Book 2.0.
 
 ## Quick Start
-
+%
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/jupyter-book-workshop.git
