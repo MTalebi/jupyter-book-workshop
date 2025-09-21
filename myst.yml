@@ -12,9 +12,9 @@ project:
     - name: Mohammad Talebi-Kalaleh
       affiliations:
         - University of Alberta
-      orcid: 0000-0000-0000-0000
+      orcid: 0009-0004-3754-5992
       email: talebi@ualberta.ca
-  github: yourusername/jupyter-book-workshop
+  github: MTalebi/jupyter-book-workshop
   
   abbreviations:
     SHM: Structural Health Monitoring
@@ -27,6 +27,7 @@ project:
     - file: content/intro.md
     - file: content/chapter1.md
     - file: content/chapter2.md
+    - file: jupyter-book-workshop.md
     
 site:
   template: book-theme
