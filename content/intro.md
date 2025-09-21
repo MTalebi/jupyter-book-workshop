@@ -37,7 +37,7 @@ This book contains three main sections:
 2. **[](chapter2)** - Advanced computational features
 
 :::{note}
-All code examples are fully executable. Run `jupyter-book start --execute` to see live outputs.
+All code examples are fully executable. Run `jupyter book start --execute` to see live outputs.
 :::
 
 ## About the Instructor

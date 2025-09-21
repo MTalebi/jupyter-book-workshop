@@ -172,4 +172,4 @@ graph TD
 ## Bibliography
 
 For comprehensive FEM theory, see [@smith2023; @johnson2022]. 
-Recent advances in SHM are reviewed in @10.1016/j.engstruct.2023.115234.
+Recent advances in SHM are reviewed in [@zhang2023].

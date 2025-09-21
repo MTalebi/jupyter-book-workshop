@@ -24,9 +24,9 @@ project:
     PCA: Principal Component Analysis
     
   toc:
-    - file: content/intro
-    - file: content/chapter1
-    - file: content/chapter2
+    - file: content/intro.md
+    - file: content/chapter1.md
+    - file: content/chapter2.md
     
 site:
   template: book-theme

@@ -61,7 +61,6 @@ Reference figures: As shown in {numref}`Figure %s <fig-mountains>`, nature can b
 
 :::{csv-table} Beam Section Properties
 :header: "Section", "Area (mm²)", "Ixx (mm⁴)", "Zx (mm³)"
-:widths: 30, 25, 25, 20
 
 "W200×100", 12700, "113e6", "1130e3"
 "W250×150", 19000, "257e6", "2057e3"

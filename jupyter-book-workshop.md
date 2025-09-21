@@ -14,14 +14,12 @@
 First, create a project folder and set up a Python virtual environment. This keeps your project dependencies isolated and reproducible.
 
 ```bash
-mkdir my-book
-cd my-book
 python -m venv .venv
 ```
 
-Activate the environment:
-- **Windows**: `.venv\Scripts\activate`
-- **Mac/Linux**: `source .venv/bin/activate`
+%Activate the environment:
+%- **Windows**: `.venv\Scripts\activate`
+%- **Mac/Linux**: `source .venv/bin/activate`
 
 ### Installing Jupyter Book
 
@@ -49,23 +47,15 @@ ipywidgets
 
 Install all requirements:
 ```bash
-pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
-
-### Initialize Your First Book
-
-```bash
-jupyter-book init
-mkdir content
-```
-
-This creates a `myst.yml` configuration file. We'll organize content in a `content/` folder.
 
 ## 2. Project Configuration
+We'll organize content in a `content/` folder.
 
 ### Understanding myst.yml
 
-The `myst.yml` file controls your book's metadata and build settings. Here's a minimal configuration for an academic paper:
+Creates a `myst.yml` configuration file. The `myst.yml` file controls your book's metadata and build settings. Here's a minimal configuration for an academic paper:
 
 ```{code-block} yaml
 :caption: myst.yml for a paper
@@ -103,7 +93,7 @@ site:
 Start the development server with automatic code execution:
 
 ```bash
-jupyter-book start --execute
+.\.venv\Scripts\jupyter-book.exe start --execute
 ```
 
 The `--execute` flag is crucial because:
@@ -670,7 +660,7 @@ The LaTeX files will be in `_build/tex/`.
 
 ### Accessing the Jupyter Server
 
-When you run `jupyter-book start --execute`, it automatically starts a Jupyter server. You can access JupyterLab for a better authoring experience:
+When you run `jupyter book start --execute`, it automatically starts a Jupyter server. You can access JupyterLab for a better authoring experience:
 
 1. Look for the server URL in your terminal (typically `http://localhost:8888/lab`)
 2. Open this URL in your browser to access JupyterLab
@@ -830,11 +820,10 @@ Use VS Code with GitHub Copilot for:
 ### Essential Commands
 
 ```bash
-jupyter-book init              # Initialize project
-jupyter-book start --execute   # Start dev server with code execution
-jupyter-book build --html      # Build static HTML
-jupyter-book build --pdf       # Build PDF
-jupyter-book clean             # Clean build files
+jupyter book init              # Initialize project
+jupyter book start --execute   # Start dev server with code execution
+jupyter book build --pdf       # Build PDF
+jupyter book clean             # Clean build files
 ```
 
 ### File Structure
