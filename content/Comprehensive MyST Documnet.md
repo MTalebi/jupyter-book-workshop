@@ -629,127 +629,149 @@ Advanced Widget Dashboard:
 
 ```{code-cell} python
 import ipywidgets as widgets
-from IPython.display import display, HTML
-import numpy as np
-import matplotlib.pyplot as plt
+from IPython.display import display
 
-# Create widget controls
-beam_length = widgets.FloatSlider(
-    value=2.0,
-    min=0.5,
-    max=5.0,
+# Text widgets
+text_input = widgets.Text(
+    value='Hello World',
+    placeholder='Type something',
+    description='Text Input:',
+    disabled=False
+)
+
+textarea = widgets.Textarea(
+    value='Multi-line\ntext input',
+    placeholder='Type something',
+    description='Text Area:',
+    disabled=False
+)
+
+# Numeric widgets
+int_slider = widgets.IntSlider(
+    value=7,
+    min=0,
+    max=10,
+    step=1,
+    description='Int Slider:'
+)
+
+float_slider = widgets.FloatSlider(
+    value=7.5,
+    min=0,
+    max=10.0,
     step=0.1,
-    description='Length (m):',
-    style={'description_width': 'initial'}
+    description='Float Slider:'
 )
 
-load_magnitude = widgets.FloatSlider(
-    value=1000,
-    min=100,
-    max=5000,
-    step=100,
-    description='Load (N):',
-    style={'description_width': 'initial'}
+int_range_slider = widgets.IntRangeSlider(
+    value=[5, 7],
+    min=0,
+    max=10,
+    step=1,
+    description='Range:'
 )
 
-material_dropdown = widgets.Dropdown(
-    options=[('Steel', 200e9), ('Aluminum', 69e9), ('Titanium', 114e9)],
-    value=200e9,
-    description='Material:',
-    style={'description_width': 'initial'}
+# Selection widgets
+dropdown = widgets.Dropdown(
+    options=['Option 1', 'Option 2', 'Option 3'],
+    value='Option 1',
+    description='Dropdown:'
 )
 
-beam_width = widgets.FloatText(
-    value=0.05,
-    description='Width (m):',
-    style={'description_width': 'initial'}
+radio_buttons = widgets.RadioButtons(
+    options=['Option A', 'Option B', 'Option C'],
+    description='Radio:'
 )
 
-beam_height = widgets.FloatText(
-    value=0.01,
-    description='Height (m):',
-    style={'description_width': 'initial'}
+select_multiple = widgets.SelectMultiple(
+    options=['Apple', 'Banana', 'Cherry', 'Date'],
+    value=['Apple'],
+    description='Multi-Select:'
 )
 
-# Output widget for results
-output = widgets.Output()
+# Boolean widgets
+checkbox = widgets.Checkbox(
+    value=False,
+    description='Checkbox',
+    disabled=False
+)
 
-def calculate_beam_response(change=None):
-    """Calculate and display beam deflection and stress."""
-    with output:
-        output.clear_output(wait=True)
-        
-        # Get values
-        L = beam_length.value
-        P = load_magnitude.value
-        E = material_dropdown.value
-        b = beam_width.value
-        h = beam_height.value
-        
-        # Calculate properties
-        I = (b * h**3) / 12  # Second moment of area
-        max_deflection = (P * L**3) / (3 * E * I)
-        max_stress = (P * L * h) / (2 * I)
-        
-        # Create visualization
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8))
-        
-        # Deflection plot
-        x = np.linspace(0, L, 100)
-        deflection = (P * x**2 * (3*L - x)) / (6 * E * I)
-        
-        ax1.plot(x, deflection * 1000, 'r-', linewidth=3, label='Deflection')
-        ax1.set_xlabel('Position along beam (m)')
-        ax1.set_ylabel('Deflection (mm)')
-        ax1.set_title(f'Cantilever Beam Deflection (Max: {max_deflection*1000:.2f} mm)')
-        ax1.grid(True, alpha=0.3)
-        ax1.legend()
-        
-        # Stress distribution
-        stress = (P * x * h) / (2 * I)
-        ax2.plot(x, stress/1e6, 'b-', linewidth=3, label='Bending Stress')
-        ax2.set_xlabel('Position along beam (m)')
-        ax2.set_ylabel('Stress (MPa)')
-        ax2.set_title(f'Bending Stress Distribution (Max: {max_stress/1e6:.1f} MPa)')
-        ax2.grid(True, alpha=0.3)
-        ax2.legend()
-        
-        plt.tight_layout()
-        plt.show()
-        
-        # Display results table
-        import pandas as pd
+toggle_button = widgets.ToggleButton(
+    value=False,
+    description='Toggle Me',
+    disabled=False,
+    button_style='info',
+    tooltip='Click me'
+)
 
-        # Create a DataFrame for the results
-        results_df = pd.DataFrame({
-            "Parameter": ["Maximum Deflection", "Maximum Stress", "Second Moment of Area", "Safety Factor (Yield=355MPa)"],
-            "Value": [f"{max_deflection*1000:.3f}", f"{max_stress/1e6:.2f}", f"{I*1e12:.2f}", f"{355/(max_stress/1e6):.2f}"],
-            "Unit": ["mm", "MPa", "mm⁴", "-"]
-        })
+# Button widgets
+button = widgets.Button(
+    description='Click Me!',
+    disabled=False,
+    button_style='success',
+    tooltip='Click me',
+    icon='check'
+)
 
-        # Display the DataFrame as an HTML table
-        display(HTML(results_df.to_html(index=False, border=0, classes='table table-striped table-bordered', justify='center')))
+# Date and time widgets
+date_picker = widgets.DatePicker(
+    description='Pick a Date',
+    disabled=False
+)
 
-# Connect widgets to calculation function
-beam_length.observe(calculate_beam_response, 'value')
-load_magnitude.observe(calculate_beam_response, 'value')
-material_dropdown.observe(calculate_beam_response, 'value')
-beam_width.observe(calculate_beam_response, 'value')
-beam_height.observe(calculate_beam_response, 'value')
+# Color picker
+color_picker = widgets.ColorPicker(
+    concise=False,
+    description='Pick a color',
+    value='blue',
+    disabled=False
+)
 
-# Create dashboard layout
-dashboard = widgets.VBox([
-    widgets.HTML('<h3 style="color: #2c3e50;">Interactive Beam Analysis Dashboard</h3>'),
-    widgets.HBox([
-        widgets.VBox([beam_length, load_magnitude, material_dropdown]),
-        widgets.VBox([beam_width, beam_height])
-    ]),
-    output
-])
+# File upload
+file_upload = widgets.FileUpload(
+    accept='',  # Accepted file extension
+    multiple=False  # True to accept multiple files
+)
 
-# Display dashboard and run initial calculation
-display(dashboard)
-calculate_beam_response()
+# Progress bar
+progress = widgets.IntProgress(
+    value=7,
+    min=0,
+    max=10,
+    description='Loading:',
+    bar_style='info',
+    style={'bar_color': 'maroon'},
+    orientation='horizontal'
+)
+
+# Display all widgets in organized layout
+display(widgets.HTML('<h3>Widget Types Demonstration</h3>'))
+
+display(widgets.HTML('<h4>Text Input Widgets</h4>'))
+display(widgets.HBox([text_input, textarea]))
+
+display(widgets.HTML('<h4>Numeric Widgets</h4>'))
+display(widgets.VBox([int_slider, float_slider, int_range_slider]))
+
+display(widgets.HTML('<h4>Selection Widgets</h4>'))
+display(widgets.HBox([
+    widgets.VBox([dropdown, radio_buttons]), 
+    select_multiple
+]))
+
+display(widgets.HTML('<h4>Boolean and Button Widgets</h4>'))
+display(widgets.HBox([checkbox, toggle_button, button]))
+
+display(widgets.HTML('<h4>Specialized Widgets</h4>'))
+display(widgets.HBox([date_picker, color_picker]))
+display(widgets.VBox([file_upload, progress]))
+
+# Add event handling example
+def on_button_clicked(b):
+    with widgets.Output():
+        print("Button clicked!")
+
+button.on_click(on_button_clicked)
 ```
 
 ### Admonitions
