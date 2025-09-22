@@ -107,4 +107,4 @@ The shear stress (Eq. {eq}`shear-stress`) is typically smaller.
 ## Citations
 
 Recent studies on FEM [@smith2023] show improved accuracy.
-Direct DOI citation: @10.1093/nar/22.22.4673
+Direct DOI citation: @10.1016/j.jsv.2025.119289

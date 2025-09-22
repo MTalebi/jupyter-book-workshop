@@ -29,14 +29,14 @@ project:
     - file: content/chapter1.md
     - file: content/chapter2.md
     - file: content/Comprehensive MyST Documnet.md
-    
+
+  exports:
+    - format: pdf
+      template: lapreprint-typst
+      articles: [content/intro.md, content/chapter1.md]
+      line_numbers: true
 site:
   template: book-theme
-  favicon: images/favicon.ico
-  logo_text: "Example Jupyter Book"
-  
-  actions:
-    - title: Download PDF
-      url: /_build/pdf/book.pdf
-    - title: GitHub
-      url: https://github.com/MTalebi/jupyter-book-workshop
+  options:
+    favicon: images/favicon.ico
+    logo_text: Example Jupyter Book

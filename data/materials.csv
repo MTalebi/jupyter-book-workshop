@@ -1,4 +1,4 @@
-Material,Density (kg/m³),E (GPa),Yield (MPa),Ultimate (MPa)
+Material,Density (kg/m3),E (GPa),Yield (MPa),Ultimate (MPa)
 Steel S355,7850,200,355,470
 Aluminum 6061,2700,69,276,310
 Concrete C30,2400,31,30,40
