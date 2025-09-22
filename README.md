@@ -54,9 +54,8 @@ Push to GitHub main branch to auto-deploy via GitHub Actions.
 
 ## Workshop Materials
 
-Created by Mohammad Talebi-Kalaleh, PhD Candidate  
-Structural Engineering, University of Alberta  
-Supervisor: Dr. Qipei Mei
+Created by Mohammad Talebi-Kalaleh
+
 
 ## License
 
