@@ -34,7 +34,7 @@ project:
     - format: pdf
       template: plain_latex_book
       articles: content/Comprehensive MyST Documnet.md
-      output: exports/Comprehensive-MyST-Document.pdf
+      output: _build/exports/Comprehensive-MyST-Document.pdf
       id: comprehensive-myst-document-export
       line_numbers: true
 site:
