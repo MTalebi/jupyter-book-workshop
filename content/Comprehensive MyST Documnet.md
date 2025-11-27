@@ -4,21 +4,24 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.16.0
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
   language: python
 numbering:
   headings: true
-  figure: true
-  table: true
-  equation: true
-  code: true
+  code_cell: true
+  figures: true
+  tables: true
+  equations: true
+downloads:
+  - id: comprehensive-myst-document-export
+    title: Comprehensive MyST Documentation (PDF)
+    description: Complete guide with all features, code examples, and styling
 ---
 
 # Comprehensive MyST Documnet
----
 
 ## Getting Started
 
@@ -69,7 +72,14 @@ We'll organize content in a `content/` folder.
 
 ### Understanding myst.yml
 
-Creates a `myst.yml` configuration file. The `myst.yml` file controls your book's metadata and build settings. Here's a minimal configuration for an academic paper:
+Creates a `myst.yml` configuration file. The `myst.yml` file controls your book's metadata and build settings. You can quickly generate a starter `myst.yml` configuration file by running the following command in your project folder:
+
+```bash
+myst init
+myst init --write-toc
+```
+
+This will interactively guide you through some basic questions, then create a `myst.yml` with sensible defaults tailored for your project. You can edit the generated file to further customize settings as shown below. Here's a minimal configuration for an academic paper:
 
 ```{code} yaml
 :filename: myst.yml
@@ -184,6 +194,12 @@ Write inline math using single dollars: $E = mc^2$
 
 For display equations with labels:
 
+```markdown
+$$
+\frac{\partial u}{\partial t} + \nabla \cdot (u \otimes u) = -\nabla p + \nu \nabla^2 u
+$$ (eq:navier-stokes)
+```
+
 $$
 \frac{\partial u}{\partial t} + \nabla \cdot (u \otimes u) = -\nabla p + \nu \nabla^2 u
 $$ (eq:navier-stokes)
@@ -192,6 +208,15 @@ $$ (eq:navier-stokes)
 
 Add figures with captions and labels for cross-referencing:
 
+```markdown
+:::{figure} ../images/beam-deflection.svg
+:label: fig:beam-fig
+:align: center
+:width: 60%
+
+Deflection of a cantilever beam under point load
+:::
+```
 :::{figure} ../images/beam-deflection.svg
 :label: fig:beam-fig
 :align: center
@@ -202,6 +227,20 @@ Deflection of a cantilever beam under point load
 
 
 For subfigures, use a grid structure:
+```markdown
+::::{figure} ../images/comparison.svg
+:label: fig:comparison-fig
+:align: center
+
+:::{image} ../images/experimental.svg
+:::
+
+:::{image} ../images/simulation.svg
+:::
+
+Experimental results
+::::
+```
 
 ::::{figure} ../images/comparison.svg
 :label: fig:comparison-fig
@@ -217,11 +256,25 @@ Experimental results
 ::::
 
 
-**Tip**: Save PowerPoint diagrams as SVG format for editability and scalability.
+:::{tip}
+Save PowerPoint diagrams as SVG format for editability and scalability.
+:::
 
 ### Tables
 
 Simple markdown tables:
+
+```markdown
+:::{table} Material Properties
+:label: tbl:material-table
+:align: center
+| Material | Young's Modulus (GPa) | Poisson's Ratio |
+|----------|----------------------|-----------------|
+| Steel    | 200                  | 0.30            |
+| Aluminum | 69                   | 0.33            |
+| Concrete | 30                   | 0.20            |
+:::
+```
 
 :::{table} Material Properties
 :label: tbl:material-table
@@ -235,7 +288,18 @@ Simple markdown tables:
 
 For CSV data inline in your document:
 
+```markdown
+:::{csv-table} Material Properties
+:label: tbl:material-table-csv
+:align: center
+:header: "Material", "Density (kg/m³)", "Yield Strength (MPa)"
 
+"Steel", 7850, 250
+"Aluminum", 2700, 95
+"Titanium", 4500, 880
+"Concrete", 2400, 3
+:::
+```
 
 :::{csv-table} Material Properties
 :label: tbl:material-table-csv
@@ -249,14 +313,24 @@ For CSV data inline in your document:
 :::
 
 
-For external CSV files, use the table directive:
-
-
-::::{table} Material Properties
+For external table files, use the `{table}` directive with the `{include}` directive nested inside. The included file should contain HTML table markup:
+```markdown
+::::{table} Material Properties from CSV File
 :label: tbl:material-table-file
 :align: center
-:::{include} ../data/materials.csv
+
+:::{include} ../data/materials.html
 :::
+
+::::
+```
+::::{table} Material Properties from CSV File
+:label: tbl:material-table-file
+:align: center
+
+:::{include} ../data/materials.html
+:::
+
 ::::
 
 
@@ -277,6 +351,11 @@ Material properties are listed in [](#tbl:material-table).
 
 Use `{numref}` for numbered references with custom text:
 
+```markdown
+{numref}`fig:beam-fig`
+{numref}`tbl:material-table`
+{numref}`Equation %s <eq:navier-stokes>`
+```
 
 {numref}`fig:beam-fig` shows the beam deflection.
 
@@ -290,6 +369,19 @@ From {numref}`Equation %s <eq:navier-stokes>`, we can derive...
 #### Method 1: BibTeX
 
 Create a `references.bib` file:
+
+````markdown
+```{code} bibtex
+:filename: references.bib
+
+@article{smith2023,
+  title={Computational Mechanics of Structures},
+  author={Smith, John and Doe, Jane},
+  journal={Journal of Engineering},
+  year={2023}
+}
+```
+````
 
 ```{code} bibtex
 :filename: references.bib
@@ -309,6 +401,12 @@ Add to frontmatter and cite:
 bibliography: references.bib
 ---
 ```
+
+```markdown
+[@smith2023]
+[@smith2023; @zhang2023]
+
+```
 Recent studies [@smith2023] show that...
 
 Multiple citations [@smith2023; @zhang2023] indicate...
@@ -317,7 +415,9 @@ Multiple citations [@smith2023; @zhang2023] indicate...
 #### Method 2: DOI
 
 Cite directly using DOI:
-
+```markdown
+@10.1016/j.jsv.2025.119289
+```
 The foundational work @10.1016/j.jsv.2025.119289 established...
 
 
@@ -389,6 +489,12 @@ Best practice: Define common metadata (authors, keywords, abbreviations) in `mys
 
 Create a hidden setup cell at the document start:
 
+````markdown
+```{code-cell} python
+:tags: [remove-cell]
+
+```
+````
 
 ```{code-cell} python
 :tags: [remove-cell]
@@ -423,7 +529,11 @@ np.random.seed(42)
 ### Static Code Blocks
 
 Display code without execution:
+````markdown
+```python
 
+```
+````
 
 ```python
 def calculate_stress(force, area):
@@ -434,10 +544,18 @@ def calculate_stress(force, area):
 
 With line numbers and highlighting:
 
+````markdown
+```{code} python
+:linenos:
+:emphasize-lines: 2
+
+
+```
+````
 
 ```{code} python
 :linenos:
-:emphasize-lines: 2,3
+:emphasize-lines: 2
 
 def beam_deflection(load, length, E, I):
     # Maximum deflection for cantilever beam
@@ -448,6 +566,13 @@ def beam_deflection(load, length, E, I):
 ### Executable Code Cells
 
 Create executable cells that run when building:
+````markdown
+```{code-cell} python
+:caption: Figure Generated by Python Code Cell with Caption.
+:label: fig:python-plot
+
+```
+````
 
 ```{code-cell} python
 :caption: Figure Generated by Python Code Cell with Caption.
@@ -468,7 +593,7 @@ Create and display tables using pandas:
 
 ```{code-cell} python
 import pandas as pd
-from IPython.display import display, HTML
+from IPython.display import display
 
 # Define material properties
 data = {
@@ -480,23 +605,33 @@ data = {
 # Create a DataFrame
 material_df = pd.DataFrame(data)
 
-display(HTML(material_df.to_html(index=False, border=0, classes='table table-striped table-bordered', justify='center')))
+display(material_df.style.hide(axis='index').set_properties(**{'text-align': 'left'}))
 ```
 
-Or using evaluation:
-:::{table} Table Generated by Python
-:label: tbl:python-table
-
-{eval}`material_df`
-
-:::
 ### Including External Code
 
 Include code from separate files. This directive is helpful for showing code snippets without duplicating your content:
 
+````markdown
+```{literalinclude} ../scripts/analysis.py
+:lineno-match:
+
+```
+````
+
 ```{literalinclude} ../scripts/analysis.py
 :lineno-match:
 ```
+
+
+````markdown
+```{literalinclude} ../scripts/analysis.py
+:start-at: def calculate_beam_deflection
+:end-before: def natural_frequency
+:lineno-match:
+
+```
+````
 
 ```{literalinclude} ../scripts/analysis.py
 :start-at: def calculate_beam_deflection
@@ -517,6 +652,12 @@ Available tags:
 
 First, let's define the required functions, then let's use different cell tags:
 
+````markdown
+```{code-cell} python
+:tags: [remove-cell]
+
+```
+````
 
 ```{code-cell} python
 :tags: [remove-cell]
@@ -565,6 +706,13 @@ def plot_final_results():
 
 ```
 
+````markdown
+```{code-cell} python
+:tags: [hide-input]
+
+```
+````
+
 ```{code-cell} python
 :tags: [hide-input]
 # Code hidden, only output shown
@@ -573,6 +721,13 @@ print(f"Maximum stress: {results['max_stress']:.2f} MPa")
 print(f"Average stress: {results['avg_stress']:.2f} MPa")
 print(f"Maximum displacement: {results['max_displacement']:.2f} mm")
 ```
+
+````markdown
+```{code-cell} python
+:tags: [hide-output]
+
+```
+````
 
 ```{code-cell} python
 :tags: [hide-output]
@@ -592,7 +747,7 @@ plot_final_results()
 
 ## Enhanced Content
 
-### Inline Code Results with {eval}
+### Inline Code Results with `{eval}`
 
 Display variables from code cells inline:
 
@@ -600,6 +755,11 @@ Display variables from code cells inline:
 :tags: [remove-cell]
 max_stress = 250.5
 safety_factor = 2.5
+```
+
+```markdown
+{eval}`max_stress`
+{eval}`safety_factor`
 ```
 
 The maximum stress is {eval}`max_stress` MPa, 
@@ -778,42 +938,103 @@ button.on_click(on_button_clicked)
 
 Highlight important information:
 
+```markdown
 :::{note}
 This method assumes linear elastic behavior.
 :::
+```
+
+:::{note}
+This method assumes linear elastic behavior.
+:::
+
+```markdown
+:::{attention}
+Ensure all units are consistent before performing calculations.
+:::
+```
 
 :::{attention}
 Ensure all units are consistent before performing calculations.
 :::
 
+```markdown
 :::{important}
 Safety factors must comply with local building codes.
 :::
+```
+
+:::{important}
+Safety factors must comply with local building codes.
+:::
+
+```markdown
+:::{caution}
+Avoid using this formula for non-linear materials.
+:::
+```
 
 :::{caution}
 Avoid using this formula for non-linear materials.
 :::
 
+```markdown
 :::{hint}
 Consider using a numerical solver for complex systems.
 :::
+```
+
+:::{hint}
+Consider using a numerical solver for complex systems.
+:::
+
+```markdown
+:::{warning}
+Check boundary conditions before applying this formula.
+:::
+```
 
 :::{warning}
 Check boundary conditions before applying this formula.
 :::
 
+```markdown
 :::{seealso}
 Refer to the appendix for detailed derivations.
 :::
+```
+
+:::{seealso}
+Refer to the appendix for detailed derivations.
+:::
+
+```markdown
+:::{danger}
+Incorrect application of this method can lead to structural failure.
+:::
+```
 
 :::{danger}
 Incorrect application of this method can lead to structural failure.
 :::
 
+```markdown
 :::{tip}
 :class: dropdown
 Use dimensionless parameters to generalize your results.
 :::
+```
+
+:::{tip}
+:class: dropdown
+Use dimensionless parameters to generalize your results.
+:::
+
+```markdown
+:::{error}
+Calculation error detected: please review input values.
+:::
+```
 
 :::{error}
 Calculation error detected: please review input values.
@@ -823,6 +1044,7 @@ Calculation error detected: please review input values.
 
 Create teaching materials:
 
+```markdown
 :::{exercise}
 :label: ex1
 Calculate the natural frequency of a cantilever beam with:
@@ -831,6 +1053,29 @@ Calculate the natural frequency of a cantilever beam with:
 - Mass m = 10 kg at the tip
 - Flexural rigidity EI = 1000 N⋅m²
 :::
+```
+
+:::{exercise}
+:label: ex1
+Calculate the natural frequency of a cantilever beam with:
+
+- Length L = 2 m
+- Mass m = 10 kg at the tip
+- Flexural rigidity EI = 1000 N⋅m²
+:::
+
+```markdown
+:::{solution} ex1
+:class: dropdown
+
+Using the formula for a cantilever with tip mass:
+$$\omega_n = \sqrt{\frac{3EI}{mL^3}}$$
+
+Substituting values:
+$$\omega_n = \sqrt{\frac{3 \times 1000}{10 \times 2^3}} = 6.12 \text{ rad/s}$$
+
+:::
+```
 
 :::{solution} ex1
 :class: dropdown
@@ -843,6 +1088,19 @@ $$\omega_n = \sqrt{\frac{3 \times 1000}{10 \times 2^3}} = 6.12 \text{ rad/s}$$
 
 :::
 
+````markdown
+:::{exercise-start}
+:label: ex2
+:::
+
+```{code-cell} python
+:tags: [remove-cell]
+
+```
+
+:::{exercise-end}
+:::
+````
 
 :::{exercise-start}
 :label: ex2
@@ -874,6 +1132,21 @@ Find the natural frequency in both rad/s and Hz.
 
 :::{exercise-end}
 :::
+
+
+````markdown
+:::{solution-start} ex2
+:class: dropdown
+:::
+
+```{code-cell} python
+:tags: [remove-cell]
+
+```
+
+:::{solution-end}
+:::
+````
 
 :::{solution-start} ex2
 :class: dropdown
@@ -957,6 +1230,18 @@ substituted_formula
 ### Mermaid Diagrams
 
 Create flowcharts and diagrams:
+````markdown
+```{mermaid}
+flowchart TD
+    A[Load Applied] --> B{Linear Analysis}
+    B -->|Small Deformation| C[Linear Solution]
+    B -->|Large Deformation| D[Nonlinear Analysis]
+    D --> E[Iterative Solution]
+    E --> F[Converged?]
+    F -->|No| E
+    F -->|Yes| G[Final Results]
+```
+````
 
 ```{mermaid}
 flowchart TD
@@ -972,6 +1257,13 @@ flowchart TD
 ### Videos and iFrames
 
 Embed multimedia content:
+```markdown
+:::{iframe} https://www.youtube.com/embed/CRa9djnZRu0?start=511&end=655&version=3&rel=0&autoplay=0
+:width: 100%
+Sample Youtube Video
+
+:::
+```
 
 :::{iframe} https://www.youtube.com/embed/CRa9djnZRu0?start=511&end=655&version=3&rel=0&autoplay=0
 :width: 100%
@@ -979,7 +1271,13 @@ Sample Youtube Video
 
 :::
 
-
+```markdown
+:::{figure} ../videos/experiment.mp4
+:label: fig:video-local
+:width: 80%
+Sample Local Video: Experimental setup and testing procedure
+:::
+```
 
 :::{figure} ../videos/experiment.mp4
 :label: fig:video-local
@@ -1242,7 +1540,7 @@ jupyter book clean             # Clean build files
 
 ### File Structure
 
-```
+```markdown
 my-book/
 ├── myst.yml              # Configuration
 ├── requirements.txt      # Dependencies
@@ -1265,6 +1563,18 @@ my-book/
 - Documentation: https://next.jupyterbook.org/tutorial
 - MyST Syntax: https://mystmd.org/guide
 - Templates: https://github.com/jupyter-book/cookiecutter-jupyter-book
+
+## Downloads
+
+Download the complete guide as PDF:
+
+- [📥 Comprehensive MyST Documentation (PDF)](../downloads/Comprehensive-MyST-Document.pdf){:download} - Complete guide with all features, code examples, and styling
+
+The PDF is automatically generated when you run the script in the `pdf_generator` folder:
+
+```bash
+python pdf_generator/generate_pdf.py
+```
 
 ---
 

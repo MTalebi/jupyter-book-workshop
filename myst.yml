@@ -32,8 +32,10 @@ project:
 
   exports:
     - format: pdf
-      template: lapreprint-typst
-      articles: [content/intro.md, content/chapter1.md]
+      template: plain_latex_book
+      articles: content/Comprehensive MyST Documnet.md
+      output: exports/Comprehensive-MyST-Document.pdf
+      id: comprehensive-myst-document-export
       line_numbers: true
 site:
   template: book-theme

@@ -17,7 +17,7 @@ numbering:
   equations: true
 ---
 
-# Welcome to Jupyter Book Workshop
+# Create Interactive Computational Books and Articles with Jupyter Book 2 and MyST Markdown
 
 This interactive book demonstrates the features of Jupyter Book 2.0 for creating computational documents. 
 
@@ -73,3 +73,21 @@ print(f"Jupyter Book Workshop - Ready to build! 🚀")
 ```
 
 Let's begin exploring the powerful features of MyST!
+
+## Downloads
+
+Download the complete guide as PDF:
+
+- [📥 Comprehensive MyST Documentation (PDF)](../downloads/Comprehensive-MyST-Document.pdf){:download} - Complete guide with all features, code examples, and styling
+
+The PDF is automatically generated when you run the script in the `pdf_generator` folder:
+
+```bash
+python pdf_generator/generate_pdf.py
+```
+
+This script will:
+- Build and execute all code cells
+- Generate styled LaTeX output with code blocks, callout boxes, and figures
+- Compile to PDF with professional Springer book styling
+- Copy the PDF to `downloads/` folder for website access
