@@ -18,7 +18,6 @@ numbering:
 downloads:
   - id: comprehensive-myst-document-export
     title: Comprehensive MyST Documentation (PDF)
-    description: Complete guide with all features, code examples, and styling
 ---
 
 # Comprehensive MyST Documnet
