@@ -226,16 +226,22 @@ def copy_build_images_to_latex():
     # Search in _build/execute (where code outputs are stored)
     execute_dir = BUILD_DIR / "execute"
     if execute_dir.exists():
+        # Search more broadly for code-generated images
         for img_file in execute_dir.rglob("*.png"):
             if img_file.name not in copied_files:
                 dest = files_dir / img_file.name
-                if not dest.exists():
-                    try:
-                        shutil.copy2(img_file, dest)
-                        copied += 1
-                        copied_files.add(img_file.name)
-                    except Exception:
-                        pass
+                try:
+                    shutil.copy2(img_file, dest)
+                    copied += 1
+                    copied_files.add(img_file.name)
+                    print(f"  Copied code-generated image: {img_file.name}")
+                except Exception:
+                    pass
+        # Also check for SVG files that should be converted
+        for img_file in execute_dir.rglob("*.svg"):
+            if img_file.name not in copied_files:
+                # Will be converted later, but note it exists
+                pass
     
     # Search in _build/temp for most recent executed outputs
     temp_dir = BUILD_DIR / "temp"
@@ -248,13 +254,24 @@ def copy_build_images_to_latex():
                 for img_file in most_recent.rglob("*.png"):
                     if "curvenote" not in img_file.name.lower() and img_file.name not in copied_files:
                         dest = files_dir / img_file.name
-                        if not dest.exists():
-                            try:
-                                shutil.copy2(img_file, dest)
-                                copied += 1
-                                copied_files.add(img_file.name)
-                            except Exception:
-                                pass
+                        try:
+                            shutil.copy2(img_file, dest)
+                            copied += 1
+                            copied_files.add(img_file.name)
+                            print(f"  Copied code-generated image from temp: {img_file.name}")
+                        except Exception:
+                            pass
+                # Also copy SVG files
+                for img_file in most_recent.rglob("*.svg"):
+                    if "curvenote" not in img_file.name.lower() and img_file.name not in copied_files:
+                        dest = files_dir / img_file.name
+                        try:
+                            shutil.copy2(img_file, dest)
+                            copied += 1
+                            copied_files.add(img_file.name)
+                            print(f"  Copied code-generated SVG from temp (will convert): {img_file.name}")
+                        except Exception:
+                            pass
             except (OSError, ValueError):
                 pass
     
@@ -264,18 +281,18 @@ def copy_build_images_to_latex():
             continue
         
         root_str = str(root).lower()
-        if 'comprehensive' not in root_str and 'myst-documnet' not in root_str:
-            continue
-        
-        for file in files:
-            if file.endswith(('.png', '.jpg', '.jpeg')) and file not in copied_files:
-                src_file = Path(root) / file
-                dest = files_dir / file
-                if not dest.exists():
+        # Search more broadly - include execute, temp, and site directories
+        if 'comprehensive' in root_str or 'myst-documnet' in root_str or 'execute' in root_str or 'temp' in root_str:
+            for file in files:
+                if file.endswith(('.png', '.jpg', '.jpeg', '.svg')) and file not in copied_files:
+                    src_file = Path(root) / file
+                    dest = files_dir / file
                     try:
                         shutil.copy2(src_file, dest)
                         copied += 1
                         copied_files.add(file)
+                        if 'execute' in root_str or 'temp' in root_str:
+                            print(f"  Copied code-generated image: {file}")
                     except Exception:
                         pass
     
@@ -469,9 +486,37 @@ def link_images_to_figures(tex_file):
             nonlocal linked, available_images, image_index, used_images
             figure_content = match.group(1)
             
-            # Skip if already has includegraphics (real image, not just comments)
+            # Check if this is a code-generated figure that might be linked to wrong image
+            has_label = re.search(r'\\label\{([^}]+)\}', figure_content)
+            label = has_label.group(1) if has_label else None
+            is_code_figure = label and ('python' in label.lower() or 'plot' in label.lower() or 'fig:python' in label.lower())
+            
+            # If already has includegraphics, check if it's the wrong image for code-generated figures
+            existing_image = None
             if '\\includegraphics{' in figure_content or '\\includegraphics[' in figure_content:
-                return match.group(0)
+                img_match = re.search(r'\\includegraphics(?:\[[^\]]*\])?\{files/([^}]+)\}', figure_content)
+                if img_match:
+                    existing_image = img_match.group(1)
+                    # For code-generated figures, check if we should relink
+                    if is_code_figure:
+                        # Check if existing image matches label - if not, we should relink
+                        existing_stem = Path(existing_image).stem.lower()
+                        label_normalized = label.lower().replace('fig:', '').replace('_', '-') if label else ''
+                        # If it's a code figure but linked to wrong image, remove old image and relink
+                        if 'python' in label_normalized or 'plot' in label_normalized:
+                            # Check if existing image is wrong (not matching label)
+                            existing_stem_lower = Path(existing_image).stem.lower()
+                            if 'beam-deflection' in existing_stem_lower or 'comparison' in existing_stem_lower:
+                                # This is a static image, not code-generated - remove it and relink
+                                # Remove the old includegraphics command
+                                figure_content = re.sub(r'\\includegraphics(?:\[[^\]]*\])?\{files/[^}]+\}\s*\n?', '', figure_content)
+                                # Continue to relink below
+                        else:
+                            return match.group(0)
+                    else:
+                        return match.group(0)
+                else:
+                    return match.group(0)
             
             # Skip if contains verbatim (code blocks or errors)
             if '\\begin{verbatim}' in figure_content or '\\begin{pythoncode}' in figure_content:
@@ -522,6 +567,11 @@ def link_images_to_figures(tex_file):
             if image_file and image_file.name not in used_images:
                 # Clean up the figure content - remove comments, keep structure
                 cleaned_figure = re.sub(r'%[^\n]*\n\s*', '', figure_content)
+                
+                # If figure already has an image and we're relinking (for code-generated figures), remove old image
+                if existing_image:
+                    # Remove old includegraphics command
+                    cleaned_figure = re.sub(r'\\includegraphics(?:\[[^\]]*\])?\{files/[^}]+\}\s*\n?', '', cleaned_figure)
                 
                 # Find insert position in cleaned content (after \centering, before caption)
                 insert_pos = 0
