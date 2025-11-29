@@ -369,19 +369,6 @@ From {numref}`Equation %s <eq:navier-stokes>`, we can derive...
 
 Create a `references.bib` file:
 
-````markdown
-```{code} bibtex
-:filename: references.bib
-
-@article{smith2023,
-  title={Computational Mechanics of Structures},
-  author={Smith, John and Doe, Jane},
-  journal={Journal of Engineering},
-  year={2023}
-}
-```
-````
-
 ```{code} bibtex
 :filename: references.bib
 
