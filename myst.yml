@@ -42,5 +42,4 @@ site:
   options:
     favicon: images/favicon.ico
     logo_text: Example Jupyter Book
-    analytics:
-      google: G-QC60HQWPK2
+    analytics_google: G-QC60HQWPK2
